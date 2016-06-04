@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>My Life Word Typing</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<p id="target"></p>
+	<p class="info">
+		Letter count: <span id="score"></span>
+		Miss count: <span id="miss"></span>
+		Remaining Time <span id="timer"></span>
+	</p>
+	<script>
+		(function() {
+			'use script';
+
+			var words = [
+				'php',
+				'dvorak',
+				'wordpress',
+				'marie',
+				'code',
+				'type',
+				'exp',
+				'opensource',
+				'tokyo',
+				'cat',
+				'football',
+				'milan',
+				'git',
+				'gulp',
+				'mysql',
+				'cd',
+				'chown',
+				'chmod',
+				'javascript',
+				'react',
+				'node',
+				'angular',
+				'sudo',
+				'html',
+				'css',
+				'photoshop',
+			]
+			var currentWord;
+			var currentLocation;
+			var score;
+			var miss;
+			var timer;
+			var target = document.getElementById('target');
+			var scoreLabel = document.getElementById('score');
+			var missLabel = document.getElementById('miss');
+			var timerLabel = document.getElementById('timer');
+			var isStarted;
+			var timerId;
+
+			function init() {
+				currentWord = 	'Life Word Typing<div class="clickme">click me</div>';
+				currentLocation = 0;
+				score = 0 ;
+				miss = 0 ;
+				timer = 53 ;
+				target.innerHTML = currentWord;
+				scoreLabel.innerHTML = score;
+				missLabel.innerHTML = miss;
+				timerLabel.innerHTML = timer;
+				isStarted = false;
+			}
+
+			init();
+
+			function updateTimer() {
+				timerId = setTimeout(function() {
+					timer--;
+					timerLabel.innerHTML = timer;
+					if (timer <= 0) {
+						// alert('game over');
+						var accuracy = (score + miss)  === 0 ? '0.000' : ((score / (score + miss)) * 100).toFixed(2);
+						alert(score + 'letters,' + miss + 'miss!  ' + accuracy + '% accuracy.');
+						clearTimeout(timerId)
+						init();
+						return;
+					}
+					updateTimer();
+				}, 1000);
+			}
+
+			function setTarget() {
+				currentWord = words[Math.floor(Math.random() * words.length)];
+				target.innerHTML = currentWord;
+				currentLocation = 0;
+			}
+
+			window.addEventListener('click', function(){
+				if (!isStarted) {
+					isStarted = true;
+					setTarget();
+					updateTimer();
+				}
+			});
+			window.addEventListener('keyup', function(e){
+				if (!isStarted) {
+					return;
+				}
+				// e.keyCode
+				// console.log(String.fromCharCode(e.keyCode));
+				if(String.fromCharCode(e.keyCode) ===
+					currentWord[currentLocation].toUpperCase()) {
+					currentLocation++;
+					var placeholder ='';
+					for (var i = 0;i < currentLocation; i++) {
+						placeholder += '_';
+					}
+					target.innerHTML = placeholder + currentWord.substring(currentLocation);
+					// console.log('score!');
+					score++;
+					scoreLabel.innerHTML = score;
+					if (currentLocation === currentWord.length) {
+						setTarget(); 
+					}
+				} else {
+					// console.log('miss!')
+					miss++;
+					missLabel.innerHTML = miss;
+				}
+
+			});
+		}) ();
+	</script>
+</body>
+</html>

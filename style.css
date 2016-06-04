@@ -1,0 +1,21 @@
+body {
+	padding-top: 40px;
+	font-family: 'Courier New', sans-serif;
+	text-align: center;
+}
+
+#target {
+	font-size: 48px;
+	letter-spacing: 3px;
+	
+}
+.info {
+	color: gray;
+}
+.clickme {
+	font-size: 28px;
+	margin-top: 20px;
+	background: #6f6f6f;
+	padding: 10px;
+	color: #FFF;
+}
